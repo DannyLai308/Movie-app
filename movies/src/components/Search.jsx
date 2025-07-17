@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Search = ({searchText, setSearchText}) => {
+const Search = ({searchTerm, setSearchTerm}) => {
   return (
     
     <div className="search">
@@ -9,8 +9,8 @@ const Search = ({searchText, setSearchText}) => {
             <input
                 type='text'
                 placeholder='Look up a movie . . .'
-                value={searchText}
-                onChange={(event)=> setSearchText(event.target.value)}
+                value={searchTerm}
+                onChange={(event)=> setSearchTerm(event.target.value)}
             />
         </div>
     </div>

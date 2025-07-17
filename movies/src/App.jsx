@@ -19,7 +19,7 @@ const API_OPTIONS={
 const App = () => {
 
   // Keep track of movies search term via search bar
-  const [searchText, setSearchText] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Error message for failure fetching movies
   const [errorMsg, setErrorMsg] = useState('');
@@ -30,13 +30,15 @@ const App = () => {
 
 
   // Fetch movies from TMDB API
-  const fetchMovies = async()=>{
+  const fetchMovies = async( query ='')=>{
     setIsLoading(true);
     setErrorMsg('');
 
 
     try{
-      const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+      const endpoint = query
+      ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+      : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
       const response = await fetch(endpoint, API_OPTIONS);
 
@@ -62,8 +64,8 @@ const App = () => {
   }
 
   useEffect(()=>{
-    fetchMovies();
-  }, []);
+    fetchMovies(searchTerm);
+  }, [searchTerm]);
 
   return (
     <main>
@@ -72,7 +74,7 @@ const App = () => {
         <header>
           <img src='./hero.png' alt='Hero Banner'/>
           <h1><span className='text-gradient'>Unwind Your Mind - Anytime, Anywhere</span></h1>
-          <Search searchText={searchText} setSearchText={setSearchText}/>
+          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         </header>
 
         <section className='all-movies'>
