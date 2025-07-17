@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Search from './components/Search'
-import Spinner from './components/Spinner';
-import MovieCard from './components/MovieCard';
+import Spinner from './components/Spinner'
+import MovieCard from './components/MovieCard'
+import {useDebounce} from 'react-use'
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -27,6 +28,10 @@ const App = () => {
   // Fetch list of movies and its loading state
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Debounce search term to delay API request ( wait for 500ms)
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm])
 
 
   // Fetch movies from TMDB API
@@ -64,8 +69,8 @@ const App = () => {
   }
 
   useEffect(()=>{
-    fetchMovies(searchTerm);
-  }, [searchTerm]);
+    fetchMovies(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   return (
     <main>
